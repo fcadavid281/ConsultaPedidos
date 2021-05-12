@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+.caja {
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.parafo {
+  font-size: 0.8rem;
+  background-color:#EDEDED;
+}
+
+.boldTexto{
+  font-weight: bold;
+}
