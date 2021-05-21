@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/Pedidos/static/css/main.c2b728fc.chunk.css",
+    "main.js": "/Pedidos/static/js/main.5ad38c57.chunk.js",
+    "main.js.map": "/Pedidos/static/js/main.5ad38c57.chunk.js.map",
+    "runtime-main.js": "/Pedidos/static/js/runtime-main.a993ad85.js",
+    "runtime-main.js.map": "/Pedidos/static/js/runtime-main.a993ad85.js.map",
+    "static/css/2.60bea9c0.chunk.css": "/Pedidos/static/css/2.60bea9c0.chunk.css",
+    "static/js/2.dc81f754.chunk.js": "/Pedidos/static/js/2.dc81f754.chunk.js",
+    "static/js/2.dc81f754.chunk.js.map": "/Pedidos/static/js/2.dc81f754.chunk.js.map",
+    "index.html": "/Pedidos/index.html",
+    "static/css/2.60bea9c0.chunk.css.map": "/Pedidos/static/css/2.60bea9c0.chunk.css.map",
+    "static/css/main.c2b728fc.chunk.css.map": "/Pedidos/static/css/main.c2b728fc.chunk.css.map",
+    "static/js/2.dc81f754.chunk.js.LICENSE.txt": "/Pedidos/static/js/2.dc81f754.chunk.js.LICENSE.txt",
+    "static/media/Durespo_300px.fad0f7b6.png": "/Pedidos/static/media/Durespo_300px.fad0f7b6.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a993ad85.js",
+    "static/css/2.60bea9c0.chunk.css",
+    "static/js/2.dc81f754.chunk.js",
+    "static/css/main.c2b728fc.chunk.css",
+    "static/js/main.5ad38c57.chunk.js"
+  ]
+}
