@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {
-  Label, Row, Col, Button, CardFooter
+  Label, Row, Col, CardFooter
 } from 'reactstrap'
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants } from '../_constants/global.constants';
@@ -24,16 +24,7 @@ class App extends Component {
       loading: true,
       matches: window.matchMedia('(min-width: 640px)').matches,
       detalle: {
-        pedido: '',
-        fechaPedido: '',
-        sucursal: '',
-        nit: '',
-        direccion: '',
-        estado: '',
-        factura: '',
-        fechaFactura: '',
-        numGuia: '',
-        transportadora: ''
+
       },
     };
 
@@ -61,16 +52,7 @@ class App extends Component {
     if (error.length > 0 || !this.state.nit.length > 0) {
       this.setState({
         detalle: {
-          pedido: '',
-          fechaPedido: '',
-          sucursal: '',
-          nit: '',
-          direccion: '',
-          estado: '',
-          factura: '',
-          fechaFactura: '',
-          numGuia: '',
-          transportadora: ''
+
         },
         mostrar: false,
         ordenNovalida: false,
@@ -96,16 +78,7 @@ class App extends Component {
           mostrar: false,
           loading: true,
           detalle: {
-            pedido: '',
-            fechaPedido: '',
-            sucursal: '',
-            nit: '',
-            direccion: '',
-            estado: '',
-            factura: '',
-            fechaFactura: '',
-            numGuia: '',
-            transportadora: ''
+
           },
         })
       }
@@ -115,7 +88,8 @@ class App extends Component {
   render() {
     const { detalle, ordenNovalida, loading, matches } = this.state
     let items = [];
-    if (detalle.length > 0) {
+
+    if (detalle.pedido !== "" && detalle.length >0 ) {
       detalle.forEach((element, index) => {
         items.push(
           <CardPedido key={index} {...element} />
@@ -135,7 +109,7 @@ class App extends Component {
               <Row>
                 <Col md='1' xs='4'>
                   <figure className="image">
-                    <img src={logo} />
+                    <img src={logo} alt='Logo durespo' />
                   </figure>
                 </Col>
               </Row>
