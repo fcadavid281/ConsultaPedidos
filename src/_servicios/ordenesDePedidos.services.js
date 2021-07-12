@@ -14,7 +14,7 @@ function obtenerOrdenesDePedidos(nit) {
         method: 'GET',
         headers: util.authHeader(),
     };
-    return fetch(`${globalConstants.API_REST}${apiBase}${nit}`, reqOpt).then(util.jsonRespuesta);
+    return fetch(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}`, reqOpt).then(util.jsonRespuesta);
 }
 
 function obtenerDetallePedido(pedido) {

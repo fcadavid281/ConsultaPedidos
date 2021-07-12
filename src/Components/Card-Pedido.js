@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Label, Row, Col, Card, CardHeader,
     CardBody, Tooltip
@@ -8,45 +8,52 @@ import { DetallePedido } from './Detalle-Pedido'
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants } from '../_constants/global.constants'
 
-const CardPedido = (detalle) => {
+const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora }) => {
 
-    const [numPedido, setNumPedido] = useState(detalle.pedido)
     const [items, setItems] = useState([])
     const [modificado, setModificado] = useState(false)
-    const [seleccionado, setSeleccionado] = useState('dropdown is-inactive');
-
-
     const [tooltipOpen, setTooltipOpen] = useState(false);
+    
 
-    const toggle = () => setTooltipOpen(!tooltipOpen);
-    const datos = (e) => {
-        setNumPedido(e.target.innerText);
-        setModificado(!modificado)
-        if (!modificado) {
-            ordenesDePedidosActions.obtenerDetallePedido(numPedido).then(data => {
-                if (data.estado === globalConstants.ESTADO_OK && data.resultado.length > 0) {
-                    setSeleccionado('dropdown is-active');
-                    setItems(data.resultado);
-                }
-            })
-        } else {
-            setSeleccionado('dropdown is-inactive');
-        }
+    useEffect(() => {
+        return () => {
+            setItems([]);
+            setModificado(false);
+        };
+    }, [nit])
+
+    const datos = _ => {
+        ordenesDePedidosActions.obtenerDetallePedido(pedido).then(data => {
+            if (data.estado === globalConstants.ESTADO_OK && data.resultado.length > 0) {
+                setModificado(!modificado)
+                setItems([...data.resultado]);
+            } else {
+                setItems([]);
+                setModificado(false);
+            }
+        })
     }
+
+    let mostar = 'dropdown is-';
+    mostar += modificado ? 'active' : 'inactive';
 
     return (
         <>
-            <Row className='parafo'>
+            <Row>
                 <Col>
-                    <Card body outline color="secondary">
+                    <Card className='parrafo' body outline color="secondary">
                         <CardHeader>
                             <Label>
                                 Numero de pedido:
                                 <strong>
-                                    <div className={seleccionado} >
+                                    <div className={mostar} >
                                         <div className="dropdown-trigger">
-                                            <span id="TooltipExample" onClick={datos} style={{ color: '#3298dc', borderBottom: '1px solid #3298dc', marginLeft: '15px', marginRight: '15px' }}> {detalle.pedido} </span>
-                                            <Tooltip placement="top" isOpen={tooltipOpen} target="TooltipExample" toggle={toggle}>
+                                            <span id="TooltipExample" onClick={datos}
+                                                style={{ color: '#3298dc', borderBottom: '1px solid #3298dc', marginLeft: '15px', marginRight: '15px' }}
+                                            >
+                                                {pedido}
+                                            </span>
+                                            <Tooltip placement="top" isOpen={tooltipOpen} target="TooltipExample" toggle={() => setTooltipOpen(!tooltipOpen)}>
                                                 ver detalle del pedido.
                                             </Tooltip>
                                         </div>
@@ -61,7 +68,8 @@ const CardPedido = (detalle) => {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            items.map(item => <DetallePedido key={item.ean.trim()} {...item} />)
+                                                            items && items.map(item => <DetallePedido key={item.ean.trim()} {...item} />)
+
                                                         }
                                                     </tbody>
                                                 </table>
@@ -70,7 +78,7 @@ const CardPedido = (detalle) => {
                                     </div>
                                 </strong>
                                 <span>
-                                    Fecha: <strong> {detalle.fechaPedido} </strong>
+                                    Fecha: <strong> {fechaPedido} </strong>
                                 </span>
                             </Label>
                         </CardHeader>
@@ -80,19 +88,19 @@ const CardPedido = (detalle) => {
                                     <Label className='caja'>Nit:</Label>
                                 </Col  >
                                 <Col md='2'>
-                                    {detalle.nit}
+                                    {nit}
                                 </Col>
                                 <Col md='1' >
                                     <Label className='caja'>Nombre:</Label>
                                 </Col>
                                 <Col md='3'>
-                                    {detalle.sucursal}
+                                    {sucursal}
                                 </Col>
                                 <Col md='1' >
                                     <Label className='caja'>Dirección:</Label>
                                 </Col>
                                 <Col md='3'>
-                                    {detalle.direccion}
+                                    {direccion}
                                 </Col>
                             </Row>
                             <Row>
@@ -100,7 +108,7 @@ const CardPedido = (detalle) => {
                                     <Label className='boldTexto'>Estado:</Label>
                                 </Col>
                                 <Col md='2'>
-                                    <Label style={{ fontWeight: 'bold', color: '#3298dc' }} >{detalle.estado}</Label>
+                                    <Label style={{ fontWeight: 'bold', color: '#3298dc' }} >{estado}</Label>
                                 </Col>
                             </Row>
                             <Row>
@@ -108,13 +116,13 @@ const CardPedido = (detalle) => {
                                     <Label className='boldTexto'>Factura:</Label>
                                 </Col>
                                 <Col md='2'>
-                                    <Label>{detalle.factura}</Label>
+                                    <Label>{factura}</Label>
                                 </Col>
                                 <Col md='2'>
                                     <Label className='boldTexto'>Fecha</Label>
                                 </Col>
                                 <Col md='2'>
-                                    <Label>{detalle.fechaFactura}</Label>
+                                    <Label>{fechaFactura}</Label>
                                 </Col>
                             </Row>
                             <Row>
@@ -122,13 +130,13 @@ const CardPedido = (detalle) => {
                                     <Label className='boldTexto'>Guia:</Label>
                                 </Col>
                                 <Col md='2'>
-                                    {detalle.numGuia}
+                                    {numGuia}
                                 </Col>
                                 <Col md='2'>
                                     <Label className='boldTexto'>Transportador:</Label>
                                 </Col>
                                 <Col md='2'>
-                                    {detalle.transportadora}
+                                    {transportadora}
                                 </Col>
                             </Row>
                         </CardBody>

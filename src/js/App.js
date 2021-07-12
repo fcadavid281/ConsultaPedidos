@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {
-  Label, Row, Col, CardFooter
+  Label, Row, Col
 } from 'reactstrap'
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants } from '../_constants/global.constants';
 import { util } from '../_constants/util';
+import { FooterPedido } from '../Components/Detalle-Pedido'
+import { CardPedido } from '../Components/Card-Pedido';
+
 import '../css/App.css';
 import logo from '../assets/Durespo_300px.png';
-import { CardPedido } from '../Components/Card-Pedido';
+
 
 
 class App extends Component {
@@ -18,14 +21,11 @@ class App extends Component {
     this.state = {
       records: [],
       page: 'page',
-      // page: util.obtenerParametro(this.location.search, 'page', 1),
       mostrar: true,
       nit: 0,
       loading: true,
       matches: window.matchMedia('(min-width: 640px)').matches,
-      detalle: {
-
-      },
+      detalle: {},
     };
 
     this.setValue = util.setValue.bind(this);
@@ -39,9 +39,11 @@ class App extends Component {
       });
     }
     window.matchMedia('(min-width: 640px)').addListener(handler);
+    document.querySelector('input').focus();
   }
 
   handleSubmit(event, error, values) {
+    event.preventDefault();
     this.setState({
       error,
       values,
@@ -51,21 +53,21 @@ class App extends Component {
 
     if (error.length > 0 || !this.state.nit.length > 0) {
       this.setState({
-        detalle: {
-
-        },
+        detalle: {},
         mostrar: false,
         ordenNovalida: false,
         loading: true
       });
+      document.querySelector('input').select();
     } else {
       this.consultar();
     }
   }
 
   consultar() {
-    ordenesDePedidosActions.obtenerOrdenesDePedidos(this.state.nit).then(data => {
-      if (data.estado === globalConstants.ESTADO_OK && data.resultado !== null && data.resultado.length > 0) {
+    ordenesDePedidosActions.obtenerOrdenesDePedidos(this.state.nit.trim()).then(data => {
+      if (data.estado === globalConstants.ESTADO_OK
+        && data.resultado !== null && data.resultado.length > 0) {
         this.setState({
           detalle: data.resultado,
           mostrar: true,
@@ -77,9 +79,7 @@ class App extends Component {
           ordenNovalida: true,
           mostrar: false,
           loading: true,
-          detalle: {
-
-          },
+          detalle: {},
         })
       }
     })
@@ -89,23 +89,23 @@ class App extends Component {
     const { detalle, ordenNovalida, loading, matches } = this.state
     let items = [];
 
-    if (detalle.pedido !== "" && detalle.length >0 ) {
-      detalle.forEach((element, index) => {
+    if (detalle.length) {
+      detalle.forEach((el, index) => {
         items.push(
-          <CardPedido key={index} {...element} />
+          <CardPedido key={index} {...el}  />
         )
       });
     }
 
     return (
-
       <div className="section">
         <div className='container'>
           <div className="columns is-mobile is-centered">
-            <div style={{ display: loading === true ? 'none' : 'inline' }} className="fa-3x has-text-centered">
+            <div style={{ display: loading ? 'none' : 'inline' }} className="fa-3x has-text-centered">
               <i className="fas fa-spinner fa-spin"></i>
             </div>
-            <div id='mensaje' style={{ display: loading === false ? 'none' : 'inline' }} className={matches ? 'column box' : 'column'}  >
+            <div id='mensaje' style={{ display: loading === false ? 'none' : 'inline' }}
+              className={`${matches ? 'column box' : 'column'}`}>
               <Row>
                 <Col md='1' xs='4'>
                   <figure className="image">
@@ -116,18 +116,20 @@ class App extends Component {
               <div className="has-text-centered has-text-black">
                 <h6 className="subtitle is-6 has-text-black panel-heading">
                   Consulta de Pedidos
-                  </h6>
+                </h6>
               </div>
               <AvForm onSubmit={this.handleSubmit}>
                 <Row>
                   <Col md='12' xs='12'>
-                    <span style={{ fontSize: '0.8rem', color: '#3298dc' }} >Ingrese su número  de cédula ó NIT sin dígito de verificación</span>
+                    <span style={{ fontSize: '0.8rem', color: '#3298dc' }}>
+                      Ingrese su número  de cédula ó NIT sin dígito de verificación
+                    </span>
                   </Col>
                 </Row>
                 <br></br>
                 <Row >
                   <Col md='1' xs='12'>
-                    <Label className='boldTexto' >Documento: </Label>
+                    <Label className='boldTexto' >Documento:</Label>
                   </Col>
                   <Col md='9' xs='12' >
                     <AvField className='input is-small' type="text"
@@ -135,6 +137,7 @@ class App extends Component {
                       id='nit'
                       onChange={this.setValue}
                       placeholder="Ingrese su número  de cédula ó NIT."
+                      autoComplete='off'
                       validate={{
                         required:
                         {
@@ -176,27 +179,11 @@ class App extends Component {
                   </Col>
                 </Row>
                 <br></br>
-                {items}
+                {
+                  items
+                }
               </AvForm>
-              <CardFooter>
-                <Row className='column  parafo'>
-                  <Col md='12' xs='12'>
-                    <span>Para mayor información  comuníquese a las siguientes líneas:</span>
-                  </Col>
-                  <Col md='12' xs='12'>
-                    <span>Whatsapp: 311 636 35 39</span>
-                  </Col>
-                  <Col md='12' xs='12'>
-                    <span>Celular:  311 636 35 39</span>
-                  </Col>
-                  <Col md='12' xs='12' >
-                    <span> Medellín: (+4) 444 62 62</span>
-                  </Col>
-                  <Col md='12' xs='12'>
-                    <span>Bogotá:  (+1) 482 482 9</span>
-                  </Col>
-                </Row>
-              </CardFooter>
+              <FooterPedido />
             </div>
           </div>
         </div>
