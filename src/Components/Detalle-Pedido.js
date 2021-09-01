@@ -39,10 +39,10 @@ const FooterPedido = () => {
                         <span>Celular:  311 636 35 39</span>
                     </Col>
                     <Col md='12' xs='12' >
-                        <span> Medellín: (+4) 444 62 62</span>
+                        <span> Medellín: 604 444 62 62</span>
                     </Col>
                     <Col md='12' xs='12'>
-                        <span>Bogotá:  (+1) 482 482 9</span>
+                        <span>Bogotá:  601 482 482 9</span>
                     </Col>
                 </Row>
             </CardFooter>

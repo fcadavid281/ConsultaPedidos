@@ -24,7 +24,8 @@ class App extends Component {
       mostrar: true,
       nit: 0,
       loading: true,
-      matches: window.matchMedia('(min-width: 640px)').matches,
+      matches: false,
+      // matches: window.matchMedia('(min-width: 640px)').matches,
       detalle: {},
     };
 
@@ -32,14 +33,28 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+  handler = () => {
+    const list = window.matchMedia("(min-width: 640px)");
+    this.setState({
+      matches: list.matches
+    });
+  };
+
   componentDidMount() {
-    const handler = e => {
-      this.setState({
-        matches: e.matches
-      });
-    }
-    window.matchMedia('(min-width: 640px)').addListener(handler);
+    // const handler = e => {
+    //   this.setState({
+    //     matches: e.matches
+    //   });
+    // }
+    this.handler();
+    window.addEventListener('resize', this.handler);
+    // window.matchMedia('(min-width: 640px)').addListener(handler);
     document.querySelector('input').focus();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handler);
   }
 
   handleSubmit(event, error, values) {
@@ -92,14 +107,14 @@ class App extends Component {
     if (detalle.length) {
       detalle.forEach((el, index) => {
         items.push(
-          <CardPedido key={index} {...el}  />
+          <CardPedido key={index} {...el} matches={matches} />
         )
       });
     }
 
     return (
       <div className="section">
-        <div className='container'>
+        <div className={matches ? 'container' : 'SinMargen'}>
           <div className="columns is-mobile is-centered">
             <div style={{ display: loading ? 'none' : 'inline' }} className="fa-3x has-text-centered">
               <i className="fas fa-spinner fa-spin"></i>
@@ -132,7 +147,9 @@ class App extends Component {
                     <Label className='boldTexto' >Documento:</Label>
                   </Col>
                   <Col md='9' xs='12' >
-                    <AvField className='input is-small' type="text"
+                    <AvField
+                      className='input is-small'
+                      type="number"
                       name='nit'
                       id='nit'
                       onChange={this.setValue}
@@ -175,7 +192,7 @@ class App extends Component {
                         El numero de documento no existe.
                       </span>
                     </div>
-                    <span style={{ fontSize: '13px', textAlign: 'center' }} className='has-text-danger'></span>
+                    <span style={{ fontSize: '12px', textAlign: 'center' }} className='has-text-danger'></span>
                   </Col>
                 </Row>
                 <br></br>

@@ -8,12 +8,12 @@ import { DetallePedido } from './Detalle-Pedido'
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants } from '../_constants/global.constants'
 
-const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora }) => {
+const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora, matches = false }) => {
 
     const [items, setItems] = useState([])
     const [modificado, setModificado] = useState(false)
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    
+
 
     useEffect(() => {
         return () => {
@@ -40,7 +40,7 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
     return (
         <>
             <Row>
-                <Col>
+                <div className={!matches ? 'SinMargen' : 'col'}>
                     <Card className='parrafo' body outline color="secondary">
                         <CardHeader>
                             <Label>
@@ -82,7 +82,7 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                                 </span>
                             </Label>
                         </CardHeader>
-                        <CardBody>
+                        <div className={!matches ? 'BodyCard' : 'card-body'}>
                             <Row>
                                 <Col md='2' >
                                     <Label className='caja'>Nit:</Label>
@@ -139,9 +139,9 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                                     {transportadora}
                                 </Col>
                             </Row>
-                        </CardBody>
+                        </div>
                     </Card>
-                </Col>
+                </div>
             </Row>
             <br></br>
         </>

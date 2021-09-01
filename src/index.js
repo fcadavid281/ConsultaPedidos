@@ -5,7 +5,7 @@ import App from './js/App';
 import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
-    <App />,
+  <App />,
   document.getElementById('root')
 );
 
