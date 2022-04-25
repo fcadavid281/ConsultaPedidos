@@ -25,7 +25,6 @@ class App extends Component {
       nit: 0,
       loading: true,
       matches: false,
-      // matches: window.matchMedia('(min-width: 640px)').matches,
       detalle: {},
     };
 

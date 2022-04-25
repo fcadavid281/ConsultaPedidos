@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set \"SERVER_NAME_PRO=tauro\" &&   react-scripts build",
+    "build": "set \"SERVER_NAME_PRO=taurus\" &&   react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
