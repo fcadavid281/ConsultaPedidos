@@ -8,7 +8,10 @@ import { DetallePedido } from './Detalle-Pedido'
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants } from '../_constants/global.constants'
 
-const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora, matches = false }) => {
+
+const idSucursalesWithUrl = [8909, 37686, 41481];
+
+const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora, paginaWeb, consultaGuia, idTransportador, matches = false }) => {
 
     const [items, setItems] = useState([])
     const [modificado, setModificado] = useState(false)
@@ -138,6 +141,18 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                                 <Col md='2'>
                                     {transportadora}
                                 </Col>
+                            </Row>
+                            <Row>
+                                {/* <Col md='2'>
+                                    <Label className='boldTexto'>Consultar Guias:</Label>
+                                </Col> */}
+                                <Col>
+                                    {paginaWeb !== '' && <a href={idSucursalesWithUrl.some(x => x === idTransportador) ?
+                                        `${consultaGuia}${numGuia}` :
+                                        consultaGuia === "" ? paginaWeb : consultaGuia}
+                                        target='_blank'>Rastrear Guia</a>}
+                                </Col>
+
                             </Row>
                         </div>
                     </Card>

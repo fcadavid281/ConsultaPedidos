@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Visualiza las ordenes de taller",
   "author": "Durespo S.A",
-  "homepage": "http://alaska.durespo.com.co:8181/Pedidos",
+  "homepage": "http://app.durespo.com.co/Pedidos",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",

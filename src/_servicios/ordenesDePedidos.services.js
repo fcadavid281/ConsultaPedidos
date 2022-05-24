@@ -18,8 +18,8 @@ function obtenerOrdenesDePedidos(nit) {
 }
 
 function obtenerDetallePedido(pedido) {
-    let data={
-        pedido:pedido
+    let data = {
+        pedido: pedido
     };
 
     const reqOpt = {

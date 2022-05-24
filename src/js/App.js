@@ -82,6 +82,8 @@ class App extends Component {
     ordenesDePedidosActions.obtenerOrdenesDePedidos(this.state.nit.trim()).then(data => {
       if (data.estado === globalConstants.ESTADO_OK
         && data.resultado !== null && data.resultado.length > 0) {
+
+        // console.log(data)
         this.setState({
           detalle: data.resultado,
           mostrar: true,
@@ -102,7 +104,6 @@ class App extends Component {
   render() {
     const { detalle, ordenNovalida, loading, matches } = this.state
     let items = [];
-
     if (detalle.length) {
       detalle.forEach((el, index) => {
         items.push(
