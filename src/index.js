@@ -1,12 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './js/App';
 import 'bootstrap/dist/css/bootstrap.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
+import { PedidosApp } from './PedidosApp';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+
+  <React.StrictMode>
+    <BrowserRouter>
+      <PedidosApp />
+    </BrowserRouter>
+  </React.StrictMode>
 );
+
+// ReactDOM.render(
+//   <App />,
+//   document.getElementById('root')
+// );
 
 // serviceWorker.unregister();

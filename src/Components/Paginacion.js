@@ -33,7 +33,7 @@ class Paginacion extends Component {
             );
         }
         while (start < end && start <= totalPage) {
-            if (start == currentPage) {
+            if (start === currentPage) {
                 items.push(
                     <PaginationItem key={start} active><PaginationLink href="javascript:void(0)" onClick={this.updatePage(start)} tag="button">{start}</PaginationLink></PaginationItem>
                 );

@@ -32,7 +32,6 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   handler = () => {
     const list = window.matchMedia("(min-width: 640px)");
     this.setState({
@@ -41,11 +40,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // const handler = e => {
-    //   this.setState({
-    //     matches: e.matches
-    //   });
-    // }
     this.handler();
     window.addEventListener('resize', this.handler);
     // window.matchMedia('(min-width: 640px)').addListener(handler);

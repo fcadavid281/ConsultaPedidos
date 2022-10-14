@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import {
-    Label, Row, Col, Card, CardHeader,
-    CardBody, Tooltip
-} from 'reactstrap'
-import '../css/App.css'
-import { DetallePedido } from './Detalle-Pedido'
+import React, { useEffect, useState } from 'react';
+import { Card, CardHeader, Col, Label, Row, Tooltip } from 'reactstrap';
+import '../css/App.css';
 import { ordenesDePedidosActions } from '../_actions';
-import { globalConstants } from '../_constants/global.constants'
+import { globalConstants } from '../_constants/global.constants';
+import { DetallePedido } from './Detalle-Pedido';
 
 
 const idSucursalesWithUrl = [8909, 37686, 41481];
@@ -165,4 +162,4 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
 }
 export {
     CardPedido
-}
+};

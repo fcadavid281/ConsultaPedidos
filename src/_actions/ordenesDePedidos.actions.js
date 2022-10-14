@@ -1,15 +1,16 @@
 import { ordenesDePedidosService } from "../_servicios";
 
+const obtenerDetallePedido = async (pedido) => {
+    return await ordenesDePedidosService.obtenerDetallePedido(pedido);
+}
+
+
+const obtenerOrdenesDePedidos = async (nit) => {
+    return await ordenesDePedidosService.obtenerOrdenesDePedidos(nit);
+}
+
+
 export const ordenesDePedidosActions = {
     obtenerOrdenesDePedidos,
     obtenerDetallePedido
 };
-
-//Obtiene el resultado de la orden de taller.
-function obtenerOrdenesDePedidos(nit) {
-    return ordenesDePedidosService.obtenerOrdenesDePedidos(nit);
-}
-
-function obtenerDetallePedido(pedido) {
-    return ordenesDePedidosService.obtenerDetallePedido(pedido);
-}
