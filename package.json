@@ -1,7 +1,7 @@
 {
-  "name": "viewtaller",
+  "name": "consultaPedido",
   "version": "0.1.0",
-  "description": "Visualiza las ordenes de taller",
+  "description": "Visualiza los pedidos facturados",
   "author": "Durespo S.A",
   "homepage": "http://app.durespo.com.co/Pedidos",
   "private": true,

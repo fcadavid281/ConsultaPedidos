@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {
@@ -12,97 +12,102 @@ import { FooterPedido } from '../Components/Detalle-Pedido';
 import { ordenesDePedidosActions } from '../_actions/ordenesDePedidos.actions';
 import { globalConstants } from '../_constants/global.constants';
 import { CardPedido } from '../Components/Card-Pedido';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 
 const ConsultaApp = () => {
-    let items = [];
+
+    const inputConsulta = useRef(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        let campoId = inputConsulta.current.props.id;
+        document.querySelector(`#${campoId}`).focus();
+
+    }, [])
+
+
+    const { nit, onInputChange } = useForm({
+        nit: ''
+    })
+
     const [state, setState] = useState({
-        records: [],
-        page: 'page',
         mostrar: true,
-        nit: '',
         loading: true,
         matches: false,
-        detalle: {},
+        detalle: [],
         ordenNovalida: false
     })
 
 
-    const { records, page, mostrar, nit, loading, matches, detalle, ordenNovalida } = state;
+    const { loading, matches, detalle, ordenNovalida } = state;
 
     const handleSubmit = (event, error, values) => {
         event.preventDefault();
 
-        setState({
-            ...state,
-            error,
-            values,
-            ordenTaller: values.ordenTaller,
-            loading: false
-        });
-
-        if (error.length > 0 || !nit.length > 0) {
+        if (error.length > 0 || nit === '' || !nit.length > 0) {
             setState({
                 ...state,
                 mostrar: false,
-                ordenNovalida: false,
-                loading: true
+                detalle: []
             });
             document.querySelector('input').select();
 
         } else {
             consultar();
         }
+
     }
 
 
     const consultar = async () => {
-
-
+        setState({
+            ...state,
+            loading: false
+        })
         await ordenesDePedidosActions.obtenerOrdenesDePedidos(nit.toString().trim()).then(data => {
             if (data.estado === globalConstants.ESTADO_OK) {
+                const { resultado } = data;
 
-                console.log(data);
+
+                console.log(resultado);
+
+                // if (resultado && resultado.length > 0) {
                 setState({
-                    detalle: data.resultado,
+                    ...state,
+                    detalle: resultado,
                     mostrar: true,
                     ordenNovalida: false,
-                    loading: true
+
                 });
+                // }
+                // else {
+                //     setState({
+                //         ...state,
+                //         detalle: [],
+                //         mostrar: false,
+                //         ordenNovalida: true,
+
+                //     });
+                // }
 
             } else {
-
                 setState({
-                    ordenNovalida: true,
+                    ...state,
+                    detalle: [],
                     mostrar: false,
-                    loading: true,
-                    detalle: {}
+                    ordenNovalida: true,
                 });
 
             }
-
+            // setState({
+            //     ...state,
+            //     loading: true
+            // })
         })
     }
 
 
-
-
-    const cargarData = () => {
-        if (detalle.length) {
-            items = detalle.map((el, index) => (
-                <CardPedido key={index} {...el} matches={matches} />
-            ))
-        }
-    }
-
-    const onChange = ({ target }) => {
-        setState({
-            ...state,
-            nit: target.value
-        })
-
-    }
-
-    items = cargarData();
 
 
     return (
@@ -144,8 +149,9 @@ const ConsultaApp = () => {
                                         className='input is-small'
                                         type="number"
                                         name='nit'
+                                        ref={inputConsulta}
                                         id='nit'
-                                        onChange={(e) => onChange(e)}
+                                        onChange={onInputChange}
                                         placeholder="Ingrese su número  de cédula ó NIT."
                                         autoComplete='off'
                                         value={nit}
@@ -189,9 +195,13 @@ const ConsultaApp = () => {
                                     <span style={{ fontSize: '12px', textAlign: 'center' }} className='has-text-danger'></span>
                                 </Col>
                             </Row>
-                            <br></br>
+                            <br />
                             {
-                                items
+                                detalle.length > 0 && (
+                                    detalle.map((el, index) => (
+                                        <CardPedido key={index} {...el} matches={matches} />
+                                    ))
+                                )
                             }
                         </AvForm>
                         <FooterPedido />
