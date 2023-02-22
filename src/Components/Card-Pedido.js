@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, Col, Label, Row, Tooltip } from 'reactstrap';
-import '../css/App.css';
-import { ordenesDePedidosActions } from '../_actions';
-import { globalConstants } from '../_constants/global.constants';
-import { DetallePedido } from './Detalle-Pedido';
 
+import { ordenesDePedidosActions } from '../_actions';
+import { globalConstants } from '../_constants';
+import { DetallePedido } from '../Components';
+
+import '../css/App.css';
 
 const idSucursalesWithUrl = [8909, 37686, 41481];
 
-const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora, paginaWeb, consultaGuia, idTransportador, matches = false }) => {
+
+let styHead = {
+    color: '#3298dc',
+    borderBottom: '1px solid #3298dc',
+    marginLeft: '15px',
+    marginRight: '15px'
+}
+
+export const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, factura, fechaFactura, numGuia, transportadora, paginaWeb, consultaGuia, idTransportador, matches = false }) => {
 
     const [items, setItems] = useState([])
     const [modificado, setModificado] = useState(false)
     const [tooltipOpen, setTooltipOpen] = useState(false);
-
 
     useEffect(() => {
         return () => {
@@ -22,14 +30,16 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
         };
     }, [nit])
 
-    const datos = _ => {
-        ordenesDePedidosActions.obtenerDetallePedido(pedido).then(data => {
-            if (data.estado === globalConstants.ESTADO_OK && data.resultado.length > 0) {
+    const handleDetallePedido = e => {
+
+        ordenesDePedidosActions.obtenerDetallePedido(e).then(data => {
+            if (data.estado === globalConstants.estado_okApi) {
                 setModificado(!modificado)
                 setItems([...data.resultado]);
             } else {
                 setItems([]);
                 setModificado(false);
+
             }
         })
     }
@@ -44,37 +54,26 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                     <Card className='parrafo' body outline color="secondary">
                         <CardHeader>
                             <Label>
-                                Numero de pedido:
+                                Número de pedido:
                                 <strong>
                                     <div className={mostar} >
                                         <div className="dropdown-trigger">
-                                            <span id="TooltipExample" onClick={datos}
-                                                style={{ color: '#3298dc', borderBottom: '1px solid #3298dc', marginLeft: '15px', marginRight: '15px' }}
+                                            <span id="TooltipExample"
+                                                onClick={() => handleDetallePedido(pedido)}
+                                                style={styHead}
                                             >
                                                 {pedido}
                                             </span>
-                                            <Tooltip placement="top" isOpen={tooltipOpen} target="TooltipExample" toggle={() => setTooltipOpen(!tooltipOpen)}>
+                                            <Tooltip placement="top"
+                                                isOpen={tooltipOpen}
+                                                target="TooltipExample"
+                                                toggle={() => setTooltipOpen(!tooltipOpen)}>
                                                 ver detalle del pedido.
                                             </Tooltip>
                                         </div>
-                                        <div className="dropdown-menu" id="dropdown-menu2" role="menu">
-                                            <div className="dropdown-item">
-                                                <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth parafo">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Referencia</th>
-                                                            <th>Cantidad</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            items && items.map(item => <DetallePedido key={item.ean.trim()} {...item} />)
-
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        {
+                                            items && <DetallePedido items={items} />
+                                        }
                                     </div>
                                 </strong>
                                 <span>
@@ -82,9 +81,9 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                                 </span>
                             </Label>
                         </CardHeader>
-                        <div className={!matches ? 'BodyCard' : 'card-body'}>
+                        <div className={matches ? 'BodyCard' : 'card-body'}>
                             <Row>
-                                <Col md='2' >
+                                <Col md='2'>
                                     <Label className='caja'>Nit:</Label>
                                 </Col  >
                                 <Col md='2'>
@@ -147,7 +146,7 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                                     {paginaWeb !== '' && <a href={idSucursalesWithUrl.some(x => x === idTransportador) ?
                                         `${consultaGuia}${numGuia}` :
                                         consultaGuia === "" ? paginaWeb : consultaGuia}
-                                        target='_blank'>Rastrear Guia</a>}
+                                        target='_blank' rel="noreferrer">Rastrear Guia</a>}
                                 </Col>
 
                             </Row>
@@ -155,11 +154,9 @@ const CardPedido = ({ pedido, fechaPedido, nit, sucursal, direccion, estado, fac
                     </Card>
                 </div>
             </Row>
-            <br></br>
+            <br />
         </>
     )
-
 }
-export {
-    CardPedido
-};
+
+

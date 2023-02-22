@@ -1,18 +1,14 @@
 import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import ConsultaApp from '../js/ConsultaApp'
+import { RedirectRoute } from './RedirectRoute'
 
 export const AppRouter = () => {
     return (
         <>
             <Routes>
-                {/* <Route path='/pedidos' element={<App />} ></Route> */}
-                <Route path='pedidos/*' element={<ConsultaApp />} >
-                    {/* <Routes>
-                        <Route path='/*' element={<ConsultaApp />} ></Route>
-                    </Routes> */}
-                </Route>
-                <Route path='/*' element={<Navigate to='/pedidos' />} />
+                <Route path='pedidos' element={<ConsultaApp />} />
+                <Route path='/*' element={<RedirectRoute />} />
             </Routes>
         </>
 

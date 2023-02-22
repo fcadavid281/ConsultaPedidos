@@ -21,8 +21,6 @@ function jsonRespuesta(response) {
 
 function obtenerParametro(search, nombre, valorDefecto) {
     const values = queryString.parse(search)
-    console.log(search);
-    
     let value = values[nombre];
     if (value == null || value === "")
         value = valorDefecto;
@@ -31,7 +29,6 @@ function obtenerParametro(search, nombre, valorDefecto) {
 
 function actualizarHistoriaNavegador(props, location, data) {
     let url = queryString.stringify(data);
-    console.log(location);
     url = "?" + url;
     props.history.push({
         pathname: location.pathname,

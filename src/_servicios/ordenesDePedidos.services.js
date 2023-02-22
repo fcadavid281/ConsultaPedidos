@@ -1,5 +1,6 @@
 import { util } from '../_constants/util.js'
 import { globalConstants } from '../_constants/global.constants'
+import axios from 'axios';
 
 
 const apiBase = `/api/OrdenesDePedidos/`;
@@ -10,7 +11,33 @@ const obtenerOrdenesDePedidos = async (nit) => {
         method: 'GET',
         headers: util.authHeader(),
     };
-    return fetch(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}`, reqOpt).then(util.jsonRespuesta);
+    let response;
+
+    await axios.get(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}`, reqOpt).then(d => {
+        if (d.statusText === globalConstants.ESTADO_OK) {
+            const { data } = d;
+            response = data;
+        }
+    });
+    return response;
+}
+
+
+const obtenerOrdenesDePedidosPage = async (nit, page, size, sort, filter) => {
+
+    const reqOpt = {
+        method: 'GET',
+        headers: util.authHeader()
+    };
+
+    let resultado;
+    await axios.get(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}/${page}/${size}/${sort}/${filter}`, reqOpt).then(response => {
+        if (response.statusText === globalConstants.ESTADO_OK) {
+            const { data } = response;
+            resultado = data;
+        }
+    });
+    return resultado;
 }
 
 const obtenerDetallePedido = async (pedido) => {
@@ -29,6 +56,7 @@ const obtenerDetallePedido = async (pedido) => {
 
 export const ordenesDePedidosService = {
     obtenerOrdenesDePedidos,
-    obtenerDetallePedido
+    obtenerDetallePedido,
+    obtenerOrdenesDePedidosPage,
 };
 

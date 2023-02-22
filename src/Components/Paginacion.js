@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 
+const styleButton = {
+    background: '#3298dc', color: 'white'
+}
+
 class Paginacion extends Component {
 
     constructor(props) {
@@ -29,24 +33,24 @@ class Paginacion extends Component {
         let end = start + this.state.itemButtons;
         if (start > 1) {
             items.push(
-                <PaginationItem key={1}><PaginationLink href="javascript:void(0)" onClick={this.updatePage(1)} previous tag="button">Primera</PaginationLink></PaginationItem>
+                <PaginationItem key={1}><PaginationLink style={styleButton} href="#" onClick={this.updatePage(1)} previous tag="button">Primera</PaginationLink></PaginationItem>
             );
         }
         while (start < end && start <= totalPage) {
             if (start === currentPage) {
                 items.push(
-                    <PaginationItem key={start} active><PaginationLink href="javascript:void(0)" onClick={this.updatePage(start)} tag="button">{start}</PaginationLink></PaginationItem>
+                    <PaginationItem key={start} active><PaginationLink style={styleButton} href="#" onClick={this.updatePage(start)} tag="button">{start}</PaginationLink></PaginationItem>
                 );
             } else {
                 items.push(
-                    <PaginationItem key={start} ><PaginationLink href="javascript:void(0)" onClick={this.updatePage(start)} tag="button">{start}</PaginationLink></PaginationItem>
+                    <PaginationItem key={start} ><PaginationLink href="#" onClick={this.updatePage(start)} tag="button">{start}</PaginationLink></PaginationItem>
                 );
             }
             start = start + 1;
         }
         if ((start - 1) < totalPage) {
             items.push(
-                <PaginationItem key={totalPage}><PaginationLink href="javascript:void(0)" onClick={this.updatePage(totalPage)} next tag="button">Última</PaginationLink></PaginationItem>
+                <PaginationItem key={totalPage}><PaginationLink style={styleButton} href="#" onClick={this.updatePage(totalPage)} next tag="button">Última</PaginationLink></PaginationItem>
             );
         }
         return items;
