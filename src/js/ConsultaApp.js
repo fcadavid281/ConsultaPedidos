@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { ordenesDePedidosActions } from '../_actions';
 import { globalConstants, util } from '../_constants';
 import { useForm } from '../hooks/useForm';
-import { Logo, FooterPedido, Paginacion, Loading, CardPedido } from '../Components';
+import { Logo, FooterPedido, Paginacion, Loading, CardPedido, Message } from '../Components';
 
 import '../css/App.css';
 
@@ -17,13 +17,6 @@ const styleTitle = {
 }
 
 
-const styleMessageErro =
-{
-    color: '#f86c6b',
-    fontSize: '0.8rem',
-    margin: '0',
-    fontWeight: 'bold'
-}
 
 
 const ConsultaApp = () => {
@@ -40,7 +33,6 @@ const ConsultaApp = () => {
     useEffect(() => {
         let campoId = inputConsulta.current.props.id;
         document.querySelector(`#${campoId}`).focus();
-
         handler();
         window.addEventListener('reset', handler);
         return () => {
@@ -89,7 +81,7 @@ const ConsultaApp = () => {
             cargar: false
         })
         await ordenesDePedidosActions.obtenerOrdenesDePedidosPage(nit.toString().trim(), page, size, sort, filter).then(data => {
-            if (data.estado === globalConstants.estado_okApi) {
+            if (data.estado === globalConstants.ESTADO_OK) {
                 const { resultado } = data;
                 if (resultado && resultado.content.length > 0) {
                     setFormState({
@@ -112,6 +104,13 @@ const ConsultaApp = () => {
                     setTimeout(() => {
                         document.querySelector('input').focus();
                     }, 500);
+
+                    setTimeout(() => {
+                        setFormState({
+                            ...formState,
+                            ordenNovalida: false
+                        })
+                    }, 5000);
                 }
 
             } else {
@@ -122,6 +121,13 @@ const ConsultaApp = () => {
                     ordenNovalida: true,
                     cargar: true,
                 });
+
+                setTimeout(() => {
+                    setFormState({
+                        ...formState,
+                        ordenNovalida: false
+                    })
+                }, 100);
 
             }
         })
@@ -195,15 +201,9 @@ const ConsultaApp = () => {
                                     </button>
                                 </Col>
                             </Row>
-                            <Row style={{ display: !ordenNovalida ? 'none' : 'inline' }} >
-                                <Col md='12' xs='12'>
-                                    <div style={{ textAlign: 'center', margin: '0' }}>
-                                        <span style={styleMessageErro}>
-                                            El número de documento no existe.
-                                        </span>
-                                    </div>
-                                </Col>
-                            </Row>
+                            {
+                                ordenNovalida && <Message ordenNovalida={ordenNovalida} />
+                            }
                             <br />
                             {
                                 detalle.length > 0 && <Row className='mt-2'>

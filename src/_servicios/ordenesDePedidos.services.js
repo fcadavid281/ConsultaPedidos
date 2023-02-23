@@ -22,7 +22,6 @@ const obtenerOrdenesDePedidos = async (nit) => {
     return response;
 }
 
-
 const obtenerOrdenesDePedidosPage = async (nit, page, size, sort, filter) => {
 
     const reqOpt = {
@@ -30,14 +29,9 @@ const obtenerOrdenesDePedidosPage = async (nit, page, size, sort, filter) => {
         headers: util.authHeader()
     };
 
-    let resultado;
-    await axios.get(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}/${page}/${size}/${sort}/${filter}`, reqOpt).then(response => {
-        if (response.statusText === globalConstants.ESTADO_OK) {
-            const { data } = response;
-            resultado = data;
-        }
-    });
-    return resultado;
+    let request = await fetch(`${globalConstants.API_REST}${apiBase}${encodeURI(nit)}/${page}/${size}/${sort}/${filter}`, reqOpt);
+    let response = await util.jsonRespuesta(request);
+    return response;
 }
 
 const obtenerDetallePedido = async (pedido) => {
