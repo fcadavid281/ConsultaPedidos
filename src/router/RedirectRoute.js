@@ -6,7 +6,7 @@ export const RedirectRoute = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        navigate('/pedidos');
+        navigate('/pedido');
     }, []);
 
     return null;

@@ -7,7 +7,7 @@ export const AppRouter = () => {
     return (
         <>
             <Routes>
-                <Route path='pedidos' element={<ConsultaApp />} />
+                <Route path='/pedido' element={<ConsultaApp />} />
                 <Route path='/*' element={<RedirectRoute />} />
             </Routes>
         </>
